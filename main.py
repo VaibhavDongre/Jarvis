@@ -2,9 +2,11 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3
 import musicLibrary
+import requests
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
+newsapi = "d31293237487424189e06673053e510e"
 
 def speak(text):
     engine.say(text)
@@ -26,7 +28,16 @@ def processCommand(c):
     elif c.lowe().startswith("play"):
         song = c.lower().split(" ")[1]
         link = musicLibrary.music[song]
-        webbrowser.open(link)                  
+        webbrowser.open(link) 
+
+    #For news
+    elif "news" in c.lower():
+        r = requests.get("https://newsapi.org/v2/top-headlines?country=us&apiKey=d31293237487424189e06673053e510e")   
+        if r.status_code == 200:
+            data = r.json #parse the JSON response
+            articles = data.get('articles', []) #Extract the articles
+            for article in articles:
+                speak(article['title'])                 
 
 if __name__ == "__main__":
     speak("Initializing Jarvis.....")   
