@@ -37,7 +37,10 @@ def processCommand(c):
             data = r.json #parse the JSON response
             articles = data.get('articles', []) #Extract the articles
             for article in articles:
-                speak(article['title'])                 
+                speak(article['title'])  
+
+    else:
+        speak("Please try again...")                           
 
 if __name__ == "__main__":
     speak("Initializing Jarvis.....")   
